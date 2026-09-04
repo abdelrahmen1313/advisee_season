@@ -1,0 +1,4 @@
+[
+  { "supervisor": "smith", "supervisee1": "lee", "supervisee2": "patel" },
+  { "supervisor": "lee", "supervisee1": "garcia" }
+]

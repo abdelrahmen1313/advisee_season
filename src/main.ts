@@ -10,14 +10,20 @@ import { pathToFileURL } from "node:url";
 const PRINT = "p";
 const ADD_A = "a";
 const ADD_F = "f";
-const TOTAL = "t";
+const TOTAL = "t"; // -> t (member_name) => print(advisees).sort(a-z)
 const SLACKER = "s";
 const QUIT = "q";
 
 export type Member = {
     name: string
 }
-type TFacultyMember = typeof BinarySearchTreeNode<Member>
+
+export type Supervision = {
+    name : string,
+    supervisee1 : string,
+    supervisee2 : string,
+}
+
 
 let dataStore: Member[] = [];
 
@@ -65,13 +71,11 @@ function main() {
                 dataStore = d;
                 d = null;
             }
-            console.log("fac:", d);
             console.log("working under : ", faculty_name);
-            console.log(dataStore[0]?.name);
-
         })
         .catch((err) => {
-            console.log("error getting data_store_file ", err)
+            console.log("error getting data_store_file ", err);
+            return;
         })
 
 

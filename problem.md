@@ -1,5 +1,6 @@
 # advisee, supervise season
 
+(url)[https://www.programminghomeworkhelp.com/samples/cpp-binary-search-tree-query/]
 (url)[https://www.programminghomeworkhelp.com/uploads/images/querying-binary-3.webp]
 
 # problem
@@ -13,23 +14,27 @@ a member supervising another members, will not be assigned advisees.
 # Target Audience
 this program is being written for a faculty administrator that LOVES alphabetizing things.
 
-# resolutions
-TODO: 
-create data representation of
+# Relationship breakdown
 
--Member(name, role, duties),
+* Supervisor -> supervisee
+A faculty member (the supervisor) is responsible for one or more other members (the supervisees).
+In the BST context, this is like linking nodes — the supervisor node “points” to its supervisees.
 
-Constraints:
-Use alphabetical order for everything string.
+* advisor -> advisee
+This is a separate relationship, more like mentorship.
+Any member can advise any other member, regardless of whether they are in the same supervision chain.
 
-Implementation constraints:
- - Use binary search on a single members list.
- - Use recursion for getTotalAdvicees()
+So, the advising relationship is not limited by the tree structure — it’s more like a cross-link between nodes.
 
+* Examples :
 
-functions to implement:
+- Dr. Smith supervises Dr. Lee and Dr. Patel (so Smith → Lee, Smith → Patel).
 
+- Dr. Lee advises Dr. Patel on a research project (Lee → Patel as advisor).
 
-typing t + name implements getAdvicess(member_name) -> list the advisees of a faculty member
+## Data Sources Design
+Keep a members list per faculty.
+seperate the relationships models into a broader landscape
 
-getSlackers();
+## Other trade-offs
+
