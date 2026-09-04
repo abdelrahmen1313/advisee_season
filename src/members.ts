@@ -29,8 +29,8 @@ type t_activity = 'advising' | 'supervising';
 type Member = {
    
     name: string,
-    sup1_name?: string,
-    sup2_name? :string,
+    supervisee1: Member,
+    supervisee2 : Member,
     advisee_count: number
 };
 

@@ -19,11 +19,11 @@ class FileRegistry {
         if (this.files.get(url)) {
             return 0;
         }
-        const { size } = statSync(url);
+        const { size } = statSync(url, {throwIfNoEntry : true});
         if (!size) {
             return 0;
         }
-        this.files.set("url", { "size": size, "status": "f" });
+        this.files.set(url, { "size": size, "status": "f" });
     };
 
     getStatus(url: string) {
@@ -68,3 +68,5 @@ class FileRegistry {
     };
 
 };
+
+export const fileRegistry = new FileRegistry()
