@@ -42,6 +42,8 @@ Enforces the “up to two supervisees” rule.
 
 If supervisor already has two, reject.
 
+- DONE
+
 _____________________________________________________
 
 4-  **addAdvising(advisor: string, advisee: string)**

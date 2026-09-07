@@ -39,14 +39,15 @@ export async function addMember(name : string, fname:string, dataDirPath : strin
   const obj = {
     id : uid,
     name: name,
-  }
+  };
+  
   if (!haveTwin) {
     writeFileSync(idxTarget, `[${JSON.stringify(obj)}]`, {"encoding" : "utf-8"});
   } else {
     const index = JSON.parse(readFileSync(idxTarget, {encoding : "utf-8"}));
     for (const mem of index) {
       if (mem.name === name) {
-        throw new Error("DUPP::ERR: A meber with this name already exists!")
+        throw new Error("DUPP::ERR: A member with this name already exists!")
       }
     }
     index.push(obj);
