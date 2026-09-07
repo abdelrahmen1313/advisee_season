@@ -1,11 +1,4 @@
-/**
- * datastructures-js/binary-search-tree
- * @copyright 2020 Eyas Ranjous <eyas.ranjous@gmail.com>
- * @license MIT
- */
-/**
- * this is a general implementation of a binary search tree
- */
+
 
 import { BinarySearchTreeNode } from "./binarySearchNode.js";
 
@@ -156,16 +149,6 @@ export class BinarySearchTree<T> {
         return false;
     };
 
-    /**
-    * Checks if a value exists in the tree by its key
-    * @public
-    * @param {number|string} key
-    * @return {boolean}
-    */
-    hasKey(key: string | number) {
-      
-        return this.has({ [this.options.key]: key } as T);
-    }
 
 
     /**
@@ -212,18 +195,6 @@ export class BinarySearchTree<T> {
         return null;
     }
 
-    /**
-    * Finds a node by its object's key
-    * @public
-    * @param {number|string} key
-    * @return {BinarySearchTreeNode}
-    */
-    findKey(key: string | number) {
-        if (this.options.key === undefined || this.options.key === null) {
-            throw new Error('Missing key prop name in constructor options');
-        }
-        return this.find({ [this.options.key]: key } as T);
-    }
 
     /**
     * Finds the node with max key (most right) in the tree (recursive implementation)
@@ -269,7 +240,7 @@ export class BinarySearchTree<T> {
      * Finds the node with min key (most left) in the tree (iterative implementation)
      * @public
      * @param {BinarySearchTreeNode} [current] (default:root)
-     * @return { BinarySearchTreeNode | null } 
+     * @return { BinarySearchTreeNode | null }
      */
     minIterative(current: BinarySearchTreeNode<T> | null = this.root): BinarySearchTreeNode<T> | null {
         if (current === null) return null;
@@ -329,20 +300,6 @@ export class BinarySearchTree<T> {
         return lb
     }
 
-    /**
-     * Returns the node with the biggest object's key less or equal a given key
-     * @public
-     * @param {number|string} key
-     * @param {boolean} includeEqual
-     * @return {BinarySearchTreeNode|null}
-    */
-    lowerBoundKey(key: string | number, includeEqual = true): BinarySearchTreeNode<T> | null {
-        if (this.options.key === undefined || this.options.key === null) {
-            throw new Error('Missing key prop name in constructor options');
-        }
-
-        return this.lowerBound({ [this.options.key]: key } as T, includeEqual);
-    }
 
     /**
    * Returns the node with the biggest value less or equal a given value
@@ -355,18 +312,8 @@ export class BinarySearchTree<T> {
         return this.lowerBound(value, includeEqual);
     }
 
-    /**
-    * Returns the node with the biggest object's key less or equal a given value
-    * @public
-    * @param {number|string} value
-    * @param {boolean} includeEqual
-    * @return {BinarySearchTreeNode|null}
-    */
-    floorKey(key: string | number, includeEqual = true): BinarySearchTreeNode<T> | null {
-        return this.lowerBoundKey(key, includeEqual);
-    }
 
-    /**
+  /**
   * Returns the node with the smallest value greater or equal a given value (recursive implementation)
   * @public
   * @param {number|string|object} value
@@ -420,20 +367,6 @@ export class BinarySearchTree<T> {
         return upperBound;
     }
 
-    /**
-    * Returns the node with the smallest object's key greater or equal a given key
-    * @public
-    * @param {number|string} key
-    * @param {boolean} includeEqual
-    * @return {BinarySearchTreeNode|null}
-    */
-    upperBoundKey(key: string | number, includeEqual: boolean = true): BinarySearchTreeNode<T> | null {
-        if (this.options.key === undefined || this.options.key === null) {
-            throw new Error('Missing key prop name in constructor options');
-        }
-
-        return this.upperBound({ [this.options.key]: key } as T, includeEqual);
-    }
 
     /**
    * Returns the node with the smallest value greater or equal a given value
@@ -446,16 +379,6 @@ export class BinarySearchTree<T> {
         return this.upperBound(value, includeEqual);
     }
 
-    /**
-    * Returns the node with the smallest object's key greater or equal a given key
-    * @public
-    * @param {number|string} key
-    * @param {boolean} includeEqual
-    * @return {BinarySearchTreeNode|null}
-    */
-    ceilKey(key: string | number, includeEqual = true) {
-        return this.upperBoundKey(key, includeEqual);
-    }
 
 
     /**
@@ -647,7 +570,7 @@ export class BinarySearchTree<T> {
     /**
      * Traverses the tree per-order (node-left-right) (recursive)
      * @param {Function} cb -> cb to execute on node
-     * @param {Function} abortCb -> function that aborts the loop 
+     * @param {Function} abortCb -> function that aborts the loop
      */
     traversePerOrder(cb: Function, abortCb: Function) {
         if (typeof cb !== 'function') {
@@ -667,7 +590,7 @@ export class BinarySearchTree<T> {
     /**
      * Traverses the tree per-order (node-left-right) (iterative)
      * @param {Function} cb -> cb to execute on node
-     * @param {Function} abortCb -> function that aborts the loop 
+     * @param {Function} abortCb -> function that aborts the loop
      */
 
     traversePerOrderIterative(cb: Function, abortCb: Function) {
@@ -703,9 +626,3 @@ export class BinarySearchTree<T> {
 
 
 }
-
-
-
-
-
-

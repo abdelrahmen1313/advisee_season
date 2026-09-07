@@ -20,6 +20,6 @@ export function encodeName(name : string) :  number[] {
     sum += name[i]!.charCodeAt(0)
    };
 
-    return [sum, ...tokens]
+  return [sum, ...tokens]
 
 }

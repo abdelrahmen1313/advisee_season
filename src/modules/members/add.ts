@@ -1,12 +1,14 @@
 import { join } from "path";
 import { encodeName, type nameCode } from "../../enc/name";
-import { getFacDir } from "../faculty";
 import { existsSync, readFileSync, writeFileSync } from "fs";
 
 
-// generate a member id?
-
-function newMemberId(name : string) 
+/**
+ * @brief generate a new memberId
+ * @param {string} name
+ * @returns {string} memberId
+ */
+function newMemberId(name : string) : string
 {
   const nameToken : number[] = encodeName(name);
   const dateSegment = newDateSegment();
@@ -16,47 +18,43 @@ function newMemberId(name : string)
 
 
 
-
-
-
-// we need to save a member record under
-// faculty->{name_prefix.json}
 /**
  *
  * @param {string} name
- * @returns {void}
+ * @returns {Promise<void>}
  */
 export async function addMember(name : string, fname:string, dataDirPath : string) : Promise<void>
 {
- 
+
   const uid = newMemberId(name);
   const target = join(dataDirPath, `${uid}.json`);
   const data = { "id" : uid, "name" : name, "fname" : fname};
-  if (existsSync(target)) {
-    throw new Error("DUPP_ERR::ID_CONFLICT");
-  }
-  writeFileSync(target, JSON.stringify(data), {encoding : "utf-8"});
-  
-  
-  // TODO : save an index copy
+
   const name_idx_path = join(process.env.DATA_DIR_UNIX ?? './data', "indexes", "names");
 
   const key = uid.slice(0, uid.indexOf("-"));
   const idxTarget = join(name_idx_path, `${key}.json`)
-  const haveTwin = existsSync(idxTarget);
-  
+  const haveTwin = existsSync(idxTarget); // transferring complexity to the OS.
+
   const obj = {
     id : uid,
     name: name,
-    
   }
   if (!haveTwin) {
     writeFileSync(idxTarget, `[${JSON.stringify(obj)}]`, {"encoding" : "utf-8"});
   } else {
     const index = JSON.parse(readFileSync(idxTarget, {encoding : "utf-8"}));
+    for (const mem of index) {
+      if (mem.name === name) {
+        throw new Error("DUPP::ERR: A meber with this name already exists!")
+      }
+    }
     index.push(obj);
     writeFileSync(idxTarget, JSON.stringify(index), {"encoding" : "utf-8"});
   }
+
+  writeFileSync(target, JSON.stringify(data), {encoding : "utf-8"});
+
   return;
 }
 
@@ -87,4 +85,3 @@ export function newDateSegment() : string {
 
   return `${msSignature}-${datePart}`;
 }
-

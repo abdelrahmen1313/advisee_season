@@ -5,7 +5,7 @@ import { fileRegistry } from "./modules/files/fileRegistry.js";
 import { loadEnvFile } from "node:process";
 import { join, resolve, sep } from "node:path";
 import { pathToFileURL } from "node:url";
-import { checkFaculty, getFacDir, getFaculties } from "./modules/faculty.js";
+import { checkFaculty, getFacDir, getFaculties } from "./modules/faculty/index.js";
 import { printHelp } from "./utils/printHelp.js";
 import { addMember } from "./modules/members/add.js";
 
@@ -35,7 +35,8 @@ export type advision = {
 }
 
 
-
+// NOTE: ASSUMING ALL NAMES ARE unique
+// dupplicate names are not treated
 
 
 function main() {
@@ -89,7 +90,7 @@ function main() {
                     } catch(err) {
                         console.log("Error Adding new member :\n" , err);
                     }
-                    
+
                     return;
                 }
                 else {
