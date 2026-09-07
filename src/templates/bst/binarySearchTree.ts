@@ -10,24 +10,24 @@
 import { BinarySearchTreeNode } from "./binarySearchNode.js";
 
 /** default compare function (a > b ? 1 : -1) */
-const defaultCompare = (a: any, b: any) => {
+export const defaultCompare = (a: any, b: any) => {
     if (a === b) return 0;
     return a > b ? 1 : -1;
 };
 
-class BinarySearchTree<T> {
+export class BinarySearchTree<T> {
     compare: Function;
-    options: { key?: string | number };
+    options: { key?: string | number } | undefined ;
     root: BinarySearchTreeNode<T> | null = null;
     count: number;
 
-    constructor(compare: Function, options: { key?: string | number }) {
+    constructor(compare?: Function, options?: { key?: string | number } ) {
         if (compare && typeof compare !== 'function') {
             throw new Error('BinarySearchTree constructor expects a compare function');
         };
 
         this.compare = compare || defaultCompare;
-        this.options = options;
+        this.options = options ?? undefined;
         this.root = null;
         this.count = 0;
     }
@@ -163,9 +163,7 @@ class BinarySearchTree<T> {
     * @return {boolean}
     */
     hasKey(key: string | number) {
-        if (this.options.key === undefined || this.options.key === null) {
-            throw new Error('Missing key prop name in constructor options');
-        }
+      
         return this.has({ [this.options.key]: key } as T);
     }
 

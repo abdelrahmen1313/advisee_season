@@ -1,55 +1,42 @@
 /** main repl program for the advising season */
 import * as readline from "node:readline";
-import { BinarySearchTreeNode } from "./bst/binarySearchNode.js";
-import { fileRegistry } from "./files/fileRegistry.js";
+import { BinarySearchTreeNode } from "./templates/bst/binarySearchNode.js";
+import { fileRegistry } from "./modules/files/fileRegistry.js";
 import { loadEnvFile } from "node:process";
 import { join, resolve, sep } from "node:path";
 import { pathToFileURL } from "node:url";
+import { checkFaculty, getFacDir, getFaculties } from "./modules/faculty.js";
+import { printHelp } from "./utils/printHelp.js";
+import { addMember } from "./modules/members/add.js";
 
 
 const PRINT = "p";
-const ADD_A = "a";
-const ADD_F = "f";
+const ADD_M = "add_member"
+const ADD_A = "a"; // add advising
+const ADD_F = "f"; // add supervising
 const TOTAL = "t"; // -> t (member_name) => print(advisees).sort(a-z)
 const SLACKER = "s";
 const QUIT = "q";
 
 export type Member = {
+    id : string,
     name: string
 }
 
 export type Supervision = {
-    name : string,
-    supervisee1 : string,
-    supervisee2 : string,
+    name: string,
+    supervisee1: string,
+    supervisee2: string,
+}
+
+export type advision = {
+    mem1: string,
+    mem2: string,
 }
 
 
-let dataStore: Member[] = [];
 
 
-
-async function getDataStore(fname: string) {
-    const dataUrl = process.env.dataDir ?? "./data";
-    const srcPath = join(dataUrl, `members-${fname}.json`);
-
-
-    if (!fileRegistry.getFile(srcPath)) {
-        fileRegistry.add(srcPath);
-    };
-
-    if (fileRegistry.getStatus(srcPath) === "f") {
-        fileRegistry.aquireLock(srcPath)
-        const { default: facData } = await import(pathToFileURL(resolve(srcPath)).href, {
-            with: { type: "json" }
-        });
-        return facData
-
-    } else {
-        console.log("file locked?")
-        return 0;
-    }
-}
 
 function main() {
 
@@ -57,27 +44,27 @@ function main() {
     const faculty_name = process.argv.slice(2).join("");
 
 
-    if (typeof faculty_name != "string") {
-        console.log("Please specify a datastore");
+    if (!faculty_name || typeof faculty_name != "string") {
+        console.log("Please specify a datastore\n");
+        printHelp();
         return;
     };
 
+
     loadEnvFile();
 
+    if (faculty_name === "list_facs") {
+        console.log(getFaculties());
+        return;
+    }
 
-    getDataStore(faculty_name)
-        .then((d) => {
-            if (d !== 0) {
-                dataStore = d;
-                d = null;
-            }
-            console.log("working under : ", faculty_name);
-        })
-        .catch((err) => {
-            console.log("error getting data_store_file ", err);
-            return;
-        })
 
+    const facUrl = getFacDir(faculty_name);
+    if (!facUrl) {
+        console.log("Please check you faculty name\n");
+        printHelp();
+        return;
+    }
 
 
 
@@ -90,7 +77,26 @@ function main() {
 
 
     rl.on("line", async (input: string) => {
-        switch (input[0]) {
+        const tokens = input.split(" ");
+
+        switch (tokens[0]) {
+            case ADD_M: {
+                const name = tokens[1];
+                if (name && name?.length > 3) {
+                    try {
+                        addMember(name, faculty_name, facUrl);
+                        console.log("member added successefully")
+                    } catch(err) {
+                        console.log("Error Adding new member :\n" , err);
+                    }
+                    
+                    return;
+                }
+                else {
+                    console.log("Please enter a member name")
+                    return;
+                }
+            }
             case "t": {
                 let name = input.slice(1);
                 if (!name) { console.log("please put in a name"); return; }

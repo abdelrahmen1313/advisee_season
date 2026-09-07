@@ -12,6 +12,7 @@ class FileRegistry {
     private files = new Map<string, IFileLock>();
     public bufferedBytes: number = 0;
     public maxBuffSize: number = 65650;
+    public retryAfter : number = 500;
 
 
 
